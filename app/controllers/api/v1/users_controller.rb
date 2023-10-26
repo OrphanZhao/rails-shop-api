@@ -1,7 +1,7 @@
 class Api::V1::UsersController < ApplicationController
     before_action :set_per_page, only: [:index]
     before_action :set_page, only: [:index]
-    before_action :set_user, only: [:show, :update]
+    before_action :set_user, only: [:show, :update, :destroy]
 
     def index
         @users = User.offset(@page).limit(@per_page)
@@ -27,6 +27,11 @@ class Api::V1::UsersController < ApplicationController
         else
             render json: {error_code:500, message:@user.errors}, status: 202
         end
+    end
+
+    def destroy
+        @user.destroy
+        render json: { error_code:0, message:'ok' }, status: 204
     end
 
     private
